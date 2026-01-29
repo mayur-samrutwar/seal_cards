@@ -4,9 +4,11 @@ import Image from 'next/image'
 import AnimatedButton from '@/components/AnimatedButton'
 import { useState } from 'react'
 import WalletCorner from '@/components/WalletCorner'
+import ChooseSetModal from '@/components/ChooseSetModal'
 
 export default function GamePage() {
   const [selected, setSelected] = useState<'pack' | 'set' | null>(null)
+  const [showSetModal, setShowSetModal] = useState(false)
 
   return (
     <div
@@ -39,7 +41,7 @@ export default function GamePage() {
               />
             </button>
             <p className="text-gray-600 text-lg font-medium">
-              Get a seal pack with random cards
+              Get a 'Seal' pack with random cards
             </p>
           </div>
 
@@ -50,7 +52,10 @@ export default function GamePage() {
           <div className="flex flex-col items-center gap-3">
             <button
               type="button"
-              onClick={() => setSelected('set')}
+              onClick={() => {
+                setSelected('set')
+                setShowSetModal(true)
+              }}
               className={[
                 'relative w-[320px] h-[440px] flex items-center justify-center transition-all duration-200',
                 selected && selected !== 'set' ? 'opacity-55 grayscale-[20%]' : 'opacity-100',
@@ -73,6 +78,8 @@ export default function GamePage() {
 
         <AnimatedButton disabled={!selected} to="/game" />
       </div>
+
+      <ChooseSetModal open={showSetModal} onClose={() => setShowSetModal(false)} />
     </div>
   )
 }
