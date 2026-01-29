@@ -2,8 +2,11 @@
 
 import Image from 'next/image'
 import AnimatedButton from '@/components/AnimatedButton'
+import { useState } from 'react'
 
 export default function GamePage() {
+  const [selected, setSelected] = useState<'pack' | 'set' | null>(null)
+
   return (
     <div
       className="w-full h-screen bg-white flex items-center justify-center"
@@ -16,7 +19,15 @@ export default function GamePage() {
         <div className="flex items-center gap-8">
           {/* Pack image with text */}
           <div className="flex flex-col items-center gap-3">
-            <div className="w-[320px] h-[440px] flex items-center justify-center">
+            <button
+              type="button"
+              onClick={() => setSelected('pack')}
+              className={[
+                'relative w-[320px] h-[440px] flex items-center justify-center transition-all duration-200',
+                selected && selected !== 'pack' ? 'opacity-55 grayscale-[20%]' : 'opacity-100',
+              ].join(' ')}
+              aria-pressed={selected === 'pack'}
+            >
               <Image
                 src="/pack.png"
                 alt="Pack"
@@ -24,7 +35,7 @@ export default function GamePage() {
                 height={385}
                 className="object-contain"
               />
-            </div>
+            </button>
             <p className="text-gray-600 text-lg font-medium">
               Get a seal pack with random cards
             </p>
@@ -35,7 +46,15 @@ export default function GamePage() {
 
           {/* Set image with text */}
           <div className="flex flex-col items-center gap-3">
-            <div className="w-[320px] h-[440px] flex items-center justify-center">
+            <button
+              type="button"
+              onClick={() => setSelected('set')}
+              className={[
+                'relative w-[320px] h-[440px] flex items-center justify-center transition-all duration-200',
+                selected && selected !== 'set' ? 'opacity-55 grayscale-[20%]' : 'opacity-100',
+              ].join(' ')}
+              aria-pressed={selected === 'set'}
+            >
               <Image
                 src="/set.png"
                 alt="Set"
@@ -43,14 +62,14 @@ export default function GamePage() {
                 height={440}
                 className="object-contain"
               />
-            </div>
+            </button>
             <p className="text-gray-600 text-lg font-medium">
               Choose your own set of cards
             </p>
           </div>
         </div>
 
-        <AnimatedButton />
+        <AnimatedButton disabled={!selected} to="/game" />
       </div>
     </div>
   )
