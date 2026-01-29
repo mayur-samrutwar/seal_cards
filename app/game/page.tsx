@@ -9,6 +9,7 @@ import ChooseSetModal from '@/components/ChooseSetModal'
 export default function GamePage() {
   const [selected, setSelected] = useState<'pack' | 'set' | null>(null)
   const [showSetModal, setShowSetModal] = useState(false)
+  const [selectedCardCount, setSelectedCardCount] = useState(0)
 
   return (
     <div
@@ -25,7 +26,11 @@ export default function GamePage() {
           <div className="flex flex-col items-center gap-3">
             <button
               type="button"
-              onClick={() => setSelected('pack')}
+              onClick={() => {
+                setSelected('pack')
+                setSelectedCardCount(0)
+                setShowSetModal(false)
+              }}
               className={[
                 'relative w-[320px] h-[440px] flex items-center justify-center transition-all duration-200',
                 selected && selected !== 'pack' ? 'opacity-55 grayscale-[20%]' : 'opacity-100',
@@ -76,10 +81,27 @@ export default function GamePage() {
           </div>
         </div>
 
-        <AnimatedButton disabled={!selected} to="/game" />
+        <AnimatedButton
+          disabled={
+            !selected ||
+            (selected === 'set' && selectedCardCount !== 10)
+          }
+          to="/game"
+        />
       </div>
 
-      <ChooseSetModal open={showSetModal} onClose={() => setShowSetModal(false)} />
+      <ChooseSetModal
+        open={showSetModal}
+        onClose={() => {
+          setShowSetModal(false)
+          // Reset count if user closes without selecting 10 cards
+          if (selectedCardCount !== 10) {
+            setSelectedCardCount(0)
+            setSelected(null)
+          }
+        }}
+        onSelectionChange={(count) => setSelectedCardCount(count)}
+      />
     </div>
   )
 }

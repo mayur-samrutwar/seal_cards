@@ -27,9 +27,10 @@ const borderColors = [
 type Props = {
   open: boolean
   onClose: () => void
+  onSelectionChange?: (count: number) => void
 }
 
-export default function ChooseSetModal({ open, onClose }: Props) {
+export default function ChooseSetModal({ open, onClose, onSelectionChange }: Props) {
   const cards = useMemo(() => dinoData as DinoCard[], [])
   const [selectedIds, setSelectedIds] = useState<number[]>([])
 
@@ -42,7 +43,9 @@ export default function ChooseSetModal({ open, onClose }: Props) {
 
   const toggleCard = (card: DinoCard) => {
     if (selectedIds.includes(card.id)) {
-      setSelectedIds((prev) => prev.filter((id) => id !== card.id))
+      const newIds = selectedIds.filter((id) => id !== card.id)
+      setSelectedIds(newIds)
+      onSelectionChange?.(newIds.length)
       return
     }
 
@@ -50,7 +53,9 @@ export default function ChooseSetModal({ open, onClose }: Props) {
       return
     }
 
-    setSelectedIds((prev) => [...prev, card.id])
+    const newIds = [...selectedIds, card.id]
+    setSelectedIds(newIds)
+    onSelectionChange?.(newIds.length)
   }
 
   return (
