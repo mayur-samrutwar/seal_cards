@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import PrivyProviderWrapper from '@/components/PrivyProviderWrapper'
 
 export const metadata: Metadata = {
   title: 'Card Deck',
@@ -13,7 +14,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <PrivyProviderWrapper>{children}</PrivyProviderWrapper>
+      </body>
     </html>
   )
 }

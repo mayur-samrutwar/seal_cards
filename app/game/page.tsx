@@ -3,18 +3,20 @@
 import Image from 'next/image'
 import AnimatedButton from '@/components/AnimatedButton'
 import { useState } from 'react'
+import WalletCorner from '@/components/WalletCorner'
 
 export default function GamePage() {
   const [selected, setSelected] = useState<'pack' | 'set' | null>(null)
 
   return (
     <div
-      className="w-full h-screen bg-white flex items-center justify-center"
+      className="relative w-full h-screen bg-white flex items-center justify-center"
       style={{
         backgroundImage: 'radial-gradient(circle, #d1d5db 1px, transparent 1px)',
         backgroundSize: '24px 24px',
       }}
     >
+      <WalletCorner />
       <div className="flex flex-col items-center gap-10 -translate-y-10">
         <div className="flex items-center gap-8">
           {/* Pack image with text */}

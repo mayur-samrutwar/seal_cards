@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import AnimatedButton from './AnimatedButton'
+import LoginToPlayButton from './LoginToPlayButton'
 
 export default function CardDeck() {
   return (
@@ -21,7 +21,7 @@ export default function CardDeck() {
           className="object-contain"
         />
 
-        <AnimatedButton />
+        <LoginToPlayButton />
       </div>
     </div>
   )
