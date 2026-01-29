@@ -1,12 +1,20 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
+
 export default function AnimatedButton() {
+  const router = useRouter()
+
   const characters = ['P', 'L', 'A', 'Y', ' ', 'P', 'L', 'A', 'Y', ' ', 'P', 'L', 'A', 'Y', ' ', 'P', 'L', 'A', 'Y', ' ']
   const totalChars = characters.length
   const anglePerChar = 360 / totalChars
 
   return (
-    <button className="group cursor-pointer border-none bg-[#7808d0] text-white w-[120px] h-[120px] rounded-full overflow-hidden relative grid place-content-center transition-[background,transform] duration-300 font-semibold hover:bg-black hover:scale-105">
+    <button
+      type="button"
+      onClick={() => router.push('/game')}
+      className="group cursor-pointer border-none bg-[#7808d0] text-white w-[120px] h-[120px] rounded-full overflow-hidden relative grid place-content-center transition-[background,transform] duration-300 font-semibold hover:bg-black hover:scale-105"
+    >
       <p className="absolute inset-0 animate-[text-rotation_8s_linear_infinite]">
         {characters.map((char, index) => (
           <span
