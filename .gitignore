@@ -33,3 +33,39 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Solana / Anchor / Rust
+# Build artifacts
+**/target/
+**/Cargo.lock
+*.so
+*-keypair.json
+
+# Anchor specific
+**/target/idl/
+**/target/types/
+**/.anchor/
+**/.anchor/**
+*.log
+
+# Node modules in subdirectories
+**/node_modules/
+
+# Logs
+*.log
+
+# Environment files
+.env
+.env.local
+.env*.local
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
