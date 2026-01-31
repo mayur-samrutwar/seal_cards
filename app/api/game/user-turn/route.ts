@@ -5,7 +5,7 @@ import { type StatName } from '../types'
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { gameId, selectedStat } = body
+    const { gameId, selectedStat, timeout } = body
 
     if (!gameId) {
       return NextResponse.json(
@@ -63,12 +63,18 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // Check for timeout penalty
+    const isTimeout = timeout === true
+
     // Compare stats
     const userValue = userCard[selectedStat]
     const systemValue = systemCard[selectedStat]
 
     let winner: 'user' | 'system' | 'tie'
-    if (userValue > systemValue) {
+    if (isTimeout) {
+      // Timeout penalty: system wins automatically
+      winner = 'system'
+    } else if (userValue > systemValue) {
       winner = 'user'
     } else if (systemValue > userValue) {
       winner = 'system'
