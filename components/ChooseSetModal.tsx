@@ -27,12 +27,18 @@ const borderColors = [
 type Props = {
   open: boolean
   onClose: () => void
-  onSelectionChange?: (count: number) => void
+  onSelectionChange?: (count: number, selectedIds: number[]) => void
 }
 
 export default function ChooseSetModal({ open, onClose, onSelectionChange }: Props) {
   const cards = useMemo(() => dinoData as DinoCard[], [])
   const [selectedIds, setSelectedIds] = useState<number[]>([])
+
+  // Reset selection when modal closes
+  const handleClose = () => {
+    setSelectedIds([])
+    onClose()
+  }
 
   if (!open) return null
 
@@ -45,7 +51,7 @@ export default function ChooseSetModal({ open, onClose, onSelectionChange }: Pro
     if (selectedIds.includes(card.id)) {
       const newIds = selectedIds.filter((id) => id !== card.id)
       setSelectedIds(newIds)
-      onSelectionChange?.(newIds.length)
+      onSelectionChange?.(newIds.length, newIds)
       return
     }
 
@@ -55,7 +61,7 @@ export default function ChooseSetModal({ open, onClose, onSelectionChange }: Pro
 
     const newIds = [...selectedIds, card.id]
     setSelectedIds(newIds)
-    onSelectionChange?.(newIds.length)
+    onSelectionChange?.(newIds.length, newIds)
   }
 
   return (
@@ -78,7 +84,7 @@ export default function ChooseSetModal({ open, onClose, onSelectionChange }: Pro
           </div>
           <button
             type="button"
-            onClick={onClose}
+            onClick={handleClose}
             className="px-4 py-2 rounded-full border border-gray-200 bg-white text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors"
           >
             Done

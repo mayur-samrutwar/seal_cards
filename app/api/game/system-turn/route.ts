@@ -67,23 +67,23 @@ export async function POST(request: NextRequest) {
 
     // Update game state based on winner
     if (winner === 'user') {
-      // User wins: both cards go to user
+      // User wins: both cards go to bottom of user's deck
       gameState.userDeck.shift() // Remove user's card from top
       gameState.systemDeck.shift() // Remove system's card from top
-      gameState.userWonCards.push(userCard, systemCard)
+      gameState.userDeck.push(userCard, systemCard) // Add both to bottom of user's deck
       gameState.currentTurn = 'user' // Winner goes next
     } else if (winner === 'system') {
-      // System wins: both cards go to system
-      gameState.userDeck.shift()
-      gameState.systemDeck.shift()
-      gameState.systemWonCards.push(userCard, systemCard)
+      // System wins: both cards go to bottom of system's deck
+      gameState.userDeck.shift() // Remove user's card from top
+      gameState.systemDeck.shift() // Remove system's card from top
+      gameState.systemDeck.push(userCard, systemCard) // Add both to bottom of system's deck
       gameState.currentTurn = 'system' // Winner goes next
     } else {
-      // Tie: cards go back to respective decks (shuffle back in)
+      // Tie: cards go back to bottom of respective decks
       const userCardRemoved = gameState.userDeck.shift()!
       const systemCardRemoved = gameState.systemDeck.shift()!
       
-      // Shuffle cards back to bottom of respective decks
+      // Put cards back to bottom of respective decks
       gameState.userDeck.push(userCardRemoved)
       gameState.systemDeck.push(systemCardRemoved)
       
@@ -99,11 +99,11 @@ export async function POST(request: NextRequest) {
       winner,
     }
 
-    // Check win condition
-    if (gameState.userDeck.length === 0 && gameState.userWonCards.length === 0) {
+    // Check win condition: game ends when one player has all cards (20 total) or has 0 cards
+    if (gameState.userDeck.length === 0) {
       gameState.status = 'finished'
       gameState.winner = 'system'
-    } else if (gameState.systemDeck.length === 0 && gameState.systemWonCards.length === 0) {
+    } else if (gameState.systemDeck.length === 0) {
       gameState.status = 'finished'
       gameState.winner = 'user'
     } else {
